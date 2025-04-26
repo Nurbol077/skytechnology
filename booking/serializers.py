@@ -19,4 +19,11 @@ class TimeSlotSerializer(serializers.ModelSerializer):
 class BookingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Booking
-        fields = '__all__'
+        fields = ('id', 'place', 'timeslot', 'status', 'created_at')
+        read_only_fields = ['status', 'created_at']
+
+    def create(self, validated_data):
+        request = self.context.get('request')
+        if request and hasattr(request, 'user'):
+            validated_data['user'] = request.user
+        return super().create(validated_data)
