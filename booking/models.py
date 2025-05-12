@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings  # Для связи с пользователем
 from django.utils import timezone
+from django.contrib.auth import get_user_model
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
@@ -39,3 +40,20 @@ class Booking(models.Model):
         return f"Booking by {self.user} for {self.place} on {self.timeslot.date} {self.timeslot.start_time}"
 
 
+User = get_user_model()
+
+class Rating(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    place = models.ForeignKey('Place', on_delete=models.CASCADE)
+    score = models.PositiveSmallIntegerField()  # 1–5
+    comment = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'place')
+
+class PlaceImage(models.Model):
+    place = models.ForeignKey('Place', on_delete=models.CASCADE, related_name='images')
+    image = models.ImageField(upload_to='place_images/')
+    description = models.CharField(max_length=255, blank=True)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
