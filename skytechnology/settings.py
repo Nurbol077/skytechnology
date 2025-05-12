@@ -155,3 +155,7 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
     "BLACKLIST_TOKEN_MODEL": "rest_framework_simplejwt.token_blacklist.BlacklistedToken",
 }
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'

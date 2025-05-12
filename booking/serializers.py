@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, Place, TimeSlot, Booking
+from .models import Category, Place, TimeSlot, Booking, Rating, PlaceImage
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -27,3 +27,15 @@ class BookingSerializer(serializers.ModelSerializer):
         if request and hasattr(request, 'user'):
             validated_data['user'] = request.user
         return super().create(validated_data)
+
+
+class RatingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Rating
+        fields = '__all__'
+        read_only_fields = ['user']
+
+class PlaceImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PlaceImage
+        fields = '__all__'

@@ -1,9 +1,8 @@
 from rest_framework import viewsets, filters
 from rest_framework.generics import ListCreateAPIView
 from rest_framework import permissions
-
-from .models import Category, Place, TimeSlot, Booking
-from .serializers import CategorySerializer, PlaceSerializer, TimeSlotSerializer, BookingSerializer
+from .models import Category, Place, TimeSlot, Booking, Rating, PlaceImage
+from .serializers import CategorySerializer, PlaceSerializer, TimeSlotSerializer, BookingSerializer, RatingSerializer, PlaceImageSerializer
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -44,3 +43,16 @@ class BookingListCreateView(ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+class RatingViewSet(viewsets.ModelViewSet):
+    queryset = Rating.objects.all()
+    serializer_class = RatingSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+class PlaceImageViewSet(viewsets.ModelViewSet):
+    queryset = PlaceImage.objects.all()
+    serializer_class = PlaceImageSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
